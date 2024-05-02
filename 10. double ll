@@ -1,0 +1,150 @@
+#include<iostream>
+using namespace std;
+struct dll
+{int data;
+ dll *next;
+ dll *prev;
+};
+dll *headptr=NULL;
+dll *tailptr=NULL;
+bool isempty()
+{return (headptr==NULL);
+}
+int count()
+{dll *temp=headptr;
+ int cnt=0;
+ while(temp!=NULL)
+ {cnt++;
+  temp=temp->next;
+ }
+ return cnt;
+}
+bool insertbegin(int v)
+{dll *nn=new dll;
+ nn->data=v;
+ nn->prev=NULL;
+ nn->next=headptr;
+ if(headptr!= NULL)
+ headptr->prev=nn;
+ headptr=nn;
+ if(count()==1)
+ tailptr=nn;
+ return true;   
+}
+bool insertend(int v)
+{dll *nn=new dll;
+ nn->data=v;
+ nn->prev=NULL;
+ nn->next=NULL;
+ if(isempty())
+ {headptr=nn;
+  tailptr=nn;
+ }
+ else
+ {nn->prev=tailptr;
+  tailptr->next=nn;
+  tailptr=nn;
+ }
+ return true;
+}
+int deletebegin()
+{int rv;
+ dll *rem=headptr;
+ headptr=headptr->next;
+ if(headptr!=NULL)
+   headptr->prev=NULL;
+   rv=rem->data;
+   delete rem;
+   if(count()==0)
+   tailptr=NULL;
+   return rv;
+}
+int deleteend()
+{int rv;
+ dll*rem=tailptr;
+ rv=rem->data;
+ if(count()==1)
+ {headptr=NULL;
+  tailptr=NULL;
+ }
+ else
+ {tailptr=tailptr->prev;
+  tailptr->next=NULL;
+ }
+ delete rem;
+ return rv;
+}
+void print()
+{if(headptr==NULL)
+ cout<<"linked list is empty \n";
+ else
+ {dll *temp=headptr;
+  cout<<"NULL <- ";
+  while(temp!=NULL)
+  {cout<<temp->data;
+   temp=temp->next;
+   if(temp==NULL)
+   cout<<" -> ";
+   else
+   cout<<" <-> ";
+  }
+  cout<<"NULL";
+  cout<<endl;
+ }
+}
+int main()
+{int o=1,v;
+ while(o<8)
+   {cout<<"enter \n 1.isempty \n 2.count \n 3.insertbegin \n 4.insertend \n 5.deletebegin \n 6.deleteend \n 7.print \n 8.exit \n ";
+    cin>>o;
+    switch(o)
+    {case 1:
+    	{if(isempty())
+    	  {cout<<"dll is empty \n";
+		  }
+		 else
+		  {cout<<"dll is not empty \n";
+		  }
+		 break;
+		}
+	 case 2:
+	 	{v=count();
+	 	 cout<<"count :"<<v<<endl;
+		 break;
+		}
+	 case 3:
+	 	{cout<<"insertbegin :";
+	 	 cin>>v;
+	 	 if(insertbegin(v))
+	 	  cout<<"insertbegin successfull \n";
+	 	 else
+	 	  cout<<"insertbegin unsuccessfull \n";
+		 break;
+		}
+	 case 4:
+	 	{cout<<"insertrend :";
+	 	 cin>>v;
+	 	 if(insertend(v))
+	 	  cout<<"insertend successfull \n";
+	 	 else
+	 	  cout<<"insertend unsuccessfull \n";
+		 break;
+		}
+	 case 5:
+	 	{v=deletebegin();
+	 	 cout<<"delete begin :"<<v<<endl;
+		 break;
+		}
+	 case 6:
+	 	{v=deleteend();
+	 	 cout<<"delete end :"<<v<<endl;
+	 	 break;
+		}
+	 case 7:
+	 	{print();
+		}
+	}
+   }
+return 0;
+}
+
