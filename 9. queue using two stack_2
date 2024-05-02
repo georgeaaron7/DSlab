@@ -1,0 +1,43 @@
+#include <iostream>
+#include <stack>
+using namespace std;
+class Queue {
+    stack<int> inbox;
+    stack<int> outbox;
+public:
+    void enqueue(int x) {
+        while (!outbox.empty()) {
+            inbox.push(outbox.top());
+            outbox.pop();
+        }
+        inbox.push(x);
+    }
+    int dequeue() {
+        if (inbox.empty()) {
+            while (!outbox.empty()) {
+                inbox.push(outbox.top());
+                outbox.pop();
+            }
+        }
+        if (inbox.empty()) {
+            cout << "Queue is empty" << endl;
+            return -1; 
+        }
+        int frontElement = inbox.top();
+        inbox.pop();
+        return frontElement;
+    }
+};
+int main() {
+    Queue q;
+    q.enqueue(1);
+    q.enqueue(2);
+    q.enqueue(3);
+    cout << "Dequeue: " << q.dequeue() << endl;
+    cout << "Dequeue: " << q.dequeue() << endl;
+    q.enqueue(4);
+    cout << "Dequeue: " << q.dequeue() << endl;
+    cout << "Dequeue: " << q.dequeue() << endl;
+    return 0;
+}
+
