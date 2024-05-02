@@ -1,0 +1,137 @@
+#include<iostream>
+using namespace std;
+struct sll
+{int data;
+ sll*next;
+};
+sll *headptr=NULL;
+bool  isempty()
+{if(headptr==NULL)
+ return true;
+ else
+ return false;
+}
+int count()
+{sll*temp=headptr;
+ int cnt=0;
+ while(temp!=NULL)
+ {cnt++;
+  temp=temp->next;
+ }
+ return cnt;
+}
+bool insertbegin(int v)
+{sll *nn=new sll;
+ nn->data=v;
+  nn->next=headptr;
+  headptr=nn;
+  return true;
+}
+int deletebegin()
+{int rv;
+ sll*rem=headptr;
+ headptr=headptr->next;
+ rv=rem->data;
+ delete rem;
+ return rv;
+}
+bool insertend(int v)
+{sll*nn=new sll;
+ nn->data=v;
+  nn->next=NULL;
+  if(isempty())
+  headptr=nn;
+  else
+  {sll*temp=headptr;
+  while(temp->next!=NULL)
+  temp=temp->next;
+  temp->next=nn;
+  }
+  return true;
+}
+int deleteend()
+{int rv;
+ sll *rem;
+ if(count()==1)
+ {rem=headptr;
+  rv=rem->data;
+  headptr=NULL;
+  delete rem;
+  return rv;
+ }
+ else
+ {sll*temp=headptr;
+  while(temp->next->next!=NULL)
+  temp=temp->next;
+  rem=temp->next;
+  rv=rem->data;
+  temp->next=NULL;
+  delete rem;
+  return rv;
+ }
+}
+void print()
+{if(headptr==NULL)
+  cout<<"linked list is empty \n";
+  else
+  {sll *temp=headptr;
+   while(temp!=NULL)
+   {cout<<temp->data<<" -> ";
+    temp=temp->next;
+   }
+   cout<<"NULL";
+   cout<<endl;
+  }
+ }
+int main()
+{int o=1,v;
+while(o<8)
+{
+ cout<<"enter \n 1.isempty \n 2.count \n 3.insertbegin \n 4.deletebegin \n 5.insertend \n 6.deleteend \n 7.print \n 8.exit \n";
+ cin>>o;
+ switch(o)
+  {case 1:
+  	{if(isempty())
+  	 cout<<"sll is empty \n ";
+  	 else
+  	 cout<<"sll is not empty \n";
+  	 break;
+	}
+   case 2:
+   	{cout<<"count :"<<count()<<endl;
+   	 break;
+	}
+   case 3:
+   	{cout<<"insert begin :";
+   	 cin>>v;
+	 if(insertbegin(v))
+   	 cout<<"insert begin successfull \n";
+   	 else
+   	 cout<<"insert begin unsuccessfull \n";
+	 break;
+	}
+	case 4:
+		{cout<<deletebegin()<<endl;
+		 break;
+		}
+	case 5:
+		{cout<<"insert end :";
+		 cin>>v;
+		 if(insertend(v))
+		 cout<<"insert end successfull \n";
+		 else
+		 cout<<"insert end unsuccessfull \n";
+		 break;
+		}
+	case 6:
+		{cout<<deleteend()<<endl;
+		 break;
+		}
+	case 7:
+		{print();
+		}
+	}
+}
+return 0;
+}
+
