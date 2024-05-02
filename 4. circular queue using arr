@@ -1,0 +1,107 @@
+#include<iostream>
+#define MAX_SIZE 100		
+using namespace std;
+class CircularQueue
+{
+private:
+  int front, rear;
+  int arr[MAX_SIZE];
+public:
+    CircularQueue ()
+  {
+    front = -1;
+    rear = -1;
+  }
+  bool isFull ()
+  {
+    if ((front == 0 && rear == MAX_SIZE - 1)
+	|| (rear == (front - 1) % (MAX_SIZE - 1)))
+      {
+	return true;
+      }
+    return false;
+  }
+  bool isEmpty ()
+  {
+    if (front == -1)
+      {
+	return true;
+      }
+    return false;
+  }
+  void enQueue (int value)
+  {
+    if (isFull ())
+      {
+	cout << "QUEUE IS FULL" << endl;
+      }
+    else
+      {
+	if (front == -1)
+	  {
+	    front = 0;
+	  }
+	rear = (rear + 1) % MAX_SIZE;
+	arr[rear] = value;
+	cout << "ENQUEUED ELEMENT: " << value << endl;
+      }
+  }
+  int deQueue ()
+  {
+    int element;
+    if (isEmpty ())
+      {
+	cout << "QUEUE IS EMPTY" << endl;
+	return -1;
+      }
+    else
+      {
+	element = arr[front];
+	if (front == rear)
+	  {
+	    front = -1;
+	    rear = -1;
+	  }
+	else
+	  {
+	    front = (front + 1) % MAX_SIZE;
+	  }
+	cout << "DEQUEUED ELEMENT: " << element << endl;
+	return element;
+      }
+  }
+  void display ()
+  {
+    if (isEmpty ())
+      {
+	cout << "QUEUE IS EMPTY" << endl;
+      }
+    else
+      {
+	cout << "ELEMENTS IN THE QUEUE: ";
+	int i;
+	for (i = front; i != rear; i = (i + 1) % MAX_SIZE)
+	  {
+	    cout << arr[i] << " ";
+	  }
+	cout << arr[i] << endl;
+      }
+  }
+};
+int main ()
+{
+  CircularQueue q;
+  q.enQueue (10);
+  q.enQueue (20);
+  q.enQueue (30);
+  q.enQueue (40);
+  q.display ();
+  q.deQueue ();
+  q.deQueue ();
+  q.display ();
+  q.enQueue (50);
+  q.enQueue (60);
+  q.display ();
+  return 0;
+}
+
