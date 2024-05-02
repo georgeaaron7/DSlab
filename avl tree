@@ -1,0 +1,180 @@
+#include<iostream>
+using namespace std;
+class AVL
+{
+public:
+   int element;
+   AVL* left;
+   AVL* right;
+   int height;
+   AVL(int value)
+   {
+       element=value;
+       left=NULL;
+       right=NULL;
+       height=0;
+   }
+   int Height(AVL* root)
+   {
+       if (root==NULL)
+       {
+           return -1;
+       }
+       return max(Height(root->left), Height(root->right))+1;
+   }
+   void right_rotate(AVL* &B)
+   {
+       AVL* A=B->left;
+       B->left=A->right;
+       A->right=B;
+       A->height=max(Height(A->left), Height(A->right))+1;
+       B->height=max(Height(B->left), Height(B->right))+1;
+       B=A;
+   }
+   void left_rotate(AVL* &A)
+   {
+       AVL* B=A->right;
+       A->right=B->left;
+       B->left=A;
+       A->height=max(Height(A->left), Height(A->right))+1;
+       B->height=max(Height(B->left), Height(B->right))+1;
+       A=B;
+   }
+   void rightleft(AVL* &A)
+   {
+       right_rotate(A->right);
+       left_rotate(A);
+   }
+   void leftright(AVL* &A)
+   {
+       left_rotate(A->left);
+       right_rotate(A);
+   }
+   void insert(AVL* &root, int value)
+   {
+       if (root==NULL)
+       {
+           AVL* n=new AVL(value);
+           root=n;
+           return;
+       }
+       if (root->element>value)
+       {
+           insert(root->left, value);
+           if (Height(root->left)-Height(root->right)==2)
+           {
+               if (value<root->left->element)
+               {
+                   right_rotate(root);
+               }
+               else
+               {
+                   leftright(root);
+               }
+           }
+       }
+       else
+       {
+           insert(root->right, value);
+           if (Height(root->right)-Height(root->left)==2)
+           {
+               if (value>root->right->element)
+               {
+                   left_rotate(root);
+               }
+               else
+               {
+                   rightleft(root);
+               }
+           }
+       }
+       return;
+   }
+   void preorder(AVL* root)
+   {
+       if (root==NULL)
+       {
+           return;
+       }
+       cout<<root->element<<'\t';
+       preorder(root->left);
+       preorder(root->right);
+   }
+   void inorder(AVL* root)
+   {
+       if (root==NULL)
+       {
+           return;
+       }
+       inorder(root->left);
+       cout<<root->element<<'\t';
+       inorder(root->right);
+   }
+   void postorder(AVL* root)
+   {
+       if (root==NULL)
+       {
+           return;
+       }
+       postorder(root->left);
+       postorder(root->right);
+       cout<<root->element<<'\t';
+   }
+};
+
+AVL* deleteNode (AVL* &root, int value) {
+    if (root ==  NULL) {
+        return root;
+    }
+
+    if (value < root->element) {
+        root->left = deleteNode(root->left, value);
+    }
+    else if (value > root->element) {
+        root->right = deleteNode(root->right, value);
+    }
+    else {
+        if( (root->left == NULL) ||
+            (root->right == NULL) )
+        {
+            AVL *temp = root->left ?
+                         root->left :
+                         root->right;
+
+            if (temp == NULL)
+            {
+                temp = root;
+                root = NULL;
+            }
+            else
+                *root = *temp;
+            free(temp);
+        }
+
+        else {
+            AVL* temp =
+        }
+    }
+}
+
+int main()
+{
+   AVL* root=NULL;
+   root->insert(root, 12);
+   root->insert(root, 19);
+   root->insert(root, 5);
+   root->insert(root, 16);
+   root->insert(root, 22);
+   root->insert(root, 95);
+   root->insert(root, 78);
+   root->insert(root, 87);
+   root->insert(root, 45);
+   root->insert(root, 25);
+   root->preorder(root);
+   cout<<endl;
+   root->inorder(root);
+   cout<<endl;
+   root->postorder(root);
+   cout<<endl;
+}
+
